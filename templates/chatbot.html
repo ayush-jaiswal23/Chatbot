@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Serenity</title>
+    <link rel="icon" href="static/images/logo.png" type="image/png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              primary: '#667eea',
+              secondary: '#764ba2',
+              bgDark: '#181a20',
+              containerDark: '#23263a',
+              inputDark: '#23263a',
+              inputBorder: '#353a50',
+              textLight: '#eaeaea',
+              textMuted: '#b0b3c6',
+              error: '#ff4d4f',
+            }
+          }
+        }
+      }
+    </script>
+</head>
+<body class="bg-gradient-to-br from-bgDark to-containerDark text-textLight min-h-screen flex flex-col">
+    <div class="flex flex-col h-screen">
+        <div class="flex items-center h-20 rounded-xl border border-inputBorder p-4 shadow-lg bg-containerDark/90 backdrop-blur-md mb-2">
+            <img src="static/images/logo.png" class="h-14 w-14 rounded-full border-2 border-primary shadow-md">
+            <div class="font-extrabold ml-4 text-3xl bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">Serenity</div>
+            <div class="flex flex-1 justify-end items-center gap-4">
+                <a href="/logout" class="text-textLight px-6 py-2 border border-inputBorder rounded-lg hover:bg-primary hover:text-white transition-colors duration-200 font-semibold">Logout</a>
+                <div class="account bg-primary rounded-full h-14 w-14 flex items-center justify-center text-2xl font-bold border-2 border-secondary shadow-md">A</div>
+            </div>
+        </div>
+
+        <div class="flex-1 overflow-y-auto px-6 md:px-36 py-6 bg-containerDark rounded-xl shadow-inner">
+            {% if chat_history != [] %}
+                {% for chat in chat_history %}
+                    {% if chat.get("role")== "user" %}
+                        <div class="max-w-[70%] ml-auto px-5 py-3 leading-6 bg-inputDark rounded-2xl mb-4 border border-inputBorder shadow-md text-textLight">
+                            {{ chat.get("content") }}
+                        </div>
+                    {% endif %}
+                    {% if chat.get("role")== "bot" %}
+                        <div class="px-5 py-3 leading-6 mb-4 bg-gradient-to-r from-primary/10 to-secondary/10 rounded-2xl border border-inputBorder shadow text-textLight">
+                            {{ chat.get("content") | safe }}
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+        </div>
+
+        <div class="p-4 border-t border-inputBorder flex-shrink-0 px-6 md:px-36 bg-containerDark rounded-b-xl">
+            <form action="/bot" method="post" enctype="multipart/form-data" class="flex gap-3">
+                <input 
+                    type="text" 
+                    name="prompt" 
+                    placeholder="Ask Serenity" 
+                    required
+                    class="flex-1 px-5 py-3 bg-inputDark text-textLight rounded-xl border border-inputBorder focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent placeholder:text-muted"
+                >
+                <input 
+                    type="file" 
+                    id="hiddenFileInput" 
+                    name="file" 
+                    accept=".pdf"
+                    class="hidden" 
+                />
+                <div 
+                    id="addFileDiv"
+                    class="w-12 h-12 flex items-center justify-center bg-primary text-white rounded-full cursor-pointer hover:bg-secondary transition-colors duration-200 shadow-md"
+                    title="Upload PDF file"
+                >
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                    </svg>
+                </div>
+                <button 
+                    type="submit" 
+                    class="px-8 py-3 bg-gradient-to-r from-primary to-secondary hover:from-secondary hover:to-primary text-white rounded-xl transition-colors duration-200 font-bold shadow-lg"
+                >
+                    Send
+                </button>
+            </form>
+        </div>
+    </div>
+    <script>
+        const addFileDiv = document.getElementById("addFileDiv");
+        const hiddenFileInput = document.getElementById("hiddenFileInput");
+
+        addFileDiv.addEventListener("click", () => {
+            hiddenFileInput.click(); 
+        });
+    </script>
+</body>
+</html>
