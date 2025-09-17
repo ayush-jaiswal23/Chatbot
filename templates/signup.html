@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <form class="signup-form" action="/signup" method="post">
+            <h1>Sign Up</h1>
+            <input type="text" name="name" placeholder="Name" required>
+            <input type="text" name="username" placeholder="Username" required pattern="[a-zA-Z-]+" title="Username can only contain characters and hyphens">
+            <input type="text" name="ph_num_or_mail" placeholder="Mobile Number or Email" required>
+            <input type="password" name="password" placeholder="Set New Password" required minlength="8">
+            <input type="password" name="re_password" placeholder="Re-enter Password" required minlength="8">
+            <button type="submit">Sign Up</button>
+            <p>Already have an account? <a href="/">Login</a></p>
+        </form>
+    </div>
+</body>
+</html>

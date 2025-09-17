@@ -1,0 +1,241 @@
+body {
+    background-color: #000000;
+    color: #ffffff;
+    font-family: sans-serif;
+    margin: 0;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.login-form, .signup-form {
+    background-color: #0a0a0a;
+    padding: 40px;
+    border-radius: 10px;
+    text-align: center;
+}
+
+h1 {
+    margin-bottom: 20px;
+}
+
+input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #333;
+    border-radius: 5px;
+    background-color: #1a1a1a;
+    color: #ffffff;
+}
+
+button {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #222222;
+    color: #ffffff;
+    cursor: pointer;
+}
+
+a {
+    color: #cccccc;
+}
+
+.chat-container {
+    display: flex;
+    height: 100vh;
+    max-width: 1200px; /* Set maximum width */
+    margin: 0 auto; /* Center the container */
+}
+
+.sidebar {
+    width: 250px;
+    background-color: #0a0a0a;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    transition: width 0.3s ease-in-out, padding 0.3s ease-in-out; /* For sidebar animation */
+    overflow: hidden; /* Hide content when collapsed */
+    flex-shrink: 0; /* Prevent sidebar from shrinking */
+    z-index: 100; /* Ensure sidebar is above chat-window */
+}
+
+.sidebar.collapsed {
+    width: 0;
+    padding: 0;
+}
+
+.sidebar-header {
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column; /* Arrange items vertically */
+    gap: 10px; /* Space between buttons */
+    align-items: stretch; /* Make buttons take full width */
+}
+
+.chat-history {
+    flex-grow: 1;
+    overflow-y: auto;
+}
+
+.chat-window {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    height: 100vh; /* Fixed height */
+    width: 100%; /* Take 100% of chat-container's available width */
+    margin-left: 20px; /* Small margin when sidebar is expanded */
+    margin-right: auto; /* Keep it aligned to the right of the sidebar */
+    transition: margin-left 0.3s ease-in-out; /* For chat-window animation */
+}
+
+.sidebar.collapsed + .chat-window {
+    /* Removed margin-left: auto; and margin-right: auto; */
+}
+
+.chat-header {
+    padding: 20px;
+    background-color: #0a0a0a;
+}
+
+.chat-messages {
+    flex-grow: 1;
+    padding: 20px;
+    overflow-y: auto;
+}
+
+.chat-input {
+    padding: 20px;
+    background-color: #0a0a0a;
+    display: flex;
+}
+
+#user-input {
+    flex-grow: 1;
+    margin-right: 10px;
+}
+
+#send-btn, #file-upload-btn, #image-upload-btn {
+    width: auto;
+    padding: 10px 15px;
+}
+
+.chat-session-bar {
+    padding: 10px;
+    margin-bottom: 5px;
+    background-color: #1a1a1a;
+    border-radius: 5px;
+    cursor: pointer;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.chat-session-bar:hover {
+    background-color: #222222;
+}
+
+/* New styles for new chat button and old chats */
+.new-chat-button {
+    background-color: #333333;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-bottom: 0; /* Remove margin-bottom as gap handles spacing */
+    width: 100%; /* Make it take full width */
+}
+
+.new-chat-button:hover {
+    background-color: #444444;
+}
+
+.old-chats-section {
+    flex-grow: 1;
+    overflow-y: auto;
+    margin-top: 20px;
+}
+
+.old-chats-section h2 {
+    font-size: 18px;
+    margin-bottom: 10px;
+    color: #bbbbbb;
+}
+
+#old-chats-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+#old-chats-list li {
+    padding: 8px 10px;
+    margin-bottom: 5px;
+    background-color: #1a1a1a;
+    border-radius: 5px;
+    cursor: pointer;
+    color: #dddddd;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+#old-chats-list li:hover {
+    background-color: #222222;
+}
+
+/* Sidebar toggle button */
+.sidebar-toggle-button {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background-color: #0a0a0a;
+    color: #ffffff;
+    border: 1px solid #333;
+    border-radius: 5px;
+    width: 40px; /* Square size */
+    height: 40px; /* Square size */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 20px;
+    cursor: pointer;
+    z-index: 1000; /* Ensure it's on top */
+}
+
+.sidebar-toggle-button:hover {
+    background-color: #1a1a1a;
+}
+
+/* Styles for formatted AI messages */
+.message.model p {
+    margin: 0;
+}
+
+.message.model pre {
+    background-color: #1a1a1a;
+    padding: 10px;
+    border-radius: 5px;
+    overflow-x: auto;
+}
+
+.message.model code {
+    font-family: 'monospace';
+    color: #eeeeee;
+}
+
+.message.model strong {
+    color: #ffffff;
+}
+
+.message.model em {
+    color: #cccccc;
+}

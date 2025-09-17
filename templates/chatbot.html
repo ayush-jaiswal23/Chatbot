@@ -37,17 +37,16 @@
             </div>
         </div>
 
-        <div class="flex-1 overflow-y-auto px-6 md:px-36 py-6 bg-containerDark rounded-xl shadow-inner">
-            {% if chat_history != [] %}
+        <div id="chat-container" class="flex-1 overflow-y-auto px-6 md:px-36 py-6 bg-containerDark rounded-xl shadow-inner">
+            {% if chat_history %}
                 {% for chat in chat_history %}
-                    {% if chat.get("role")== "user" %}
+                    {% if chat.role == "user" %}
                         <div class="max-w-[70%] ml-auto px-5 py-3 leading-6 bg-inputDark rounded-2xl mb-4 border border-inputBorder shadow-md text-textLight">
-                            {{ chat.get("content") }}
+                            {{ chat.content }}
                         </div>
-                    {% endif %}
-                    {% if chat.get("role")== "bot" %}
+                    {% else %}
                         <div class="px-5 py-3 leading-6 mb-4 bg-gradient-to-r from-primary/10 to-secondary/10 rounded-2xl border border-inputBorder shadow text-textLight">
-                            {{ chat.get("content") | safe }}
+                            {{ chat.content | safe }}
                         </div>
                     {% endif %}
                 {% endfor %}
@@ -55,7 +54,7 @@
         </div>
 
         <div class="p-4 border-t border-inputBorder flex-shrink-0 px-6 md:px-36 bg-containerDark rounded-b-xl">
-            <form action="/bot" method="post" enctype="multipart/form-data" class="flex gap-3">
+            <form id="chat-form" action="/send_message" method="post" enctype="multipart/form-data" class="flex gap-3">
                 <input 
                     type="text" 
                     name="prompt" 
@@ -96,5 +95,6 @@
             hiddenFileInput.click(); 
         });
     </script>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
 </html>
