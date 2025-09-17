@@ -10,7 +10,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const formData = new FormData(chatForm);
         const userMessage = formData.get('prompt');
 
-        // Display user message immediately
         appendMessage(userMessage, 'user');
         promptInput.value = '';
 
