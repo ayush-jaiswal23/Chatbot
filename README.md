@@ -29,8 +29,8 @@ To run this project locally, follow these steps:
 
 1. **Clone the repository**:
    ```bash
-   git clone https://github.com/your-username/your-repository-name.git
-   cd your-repository-name
+   git clone https://github.com/ayush-jaiswal23/Chatbot.git
+   cd Chatbot
    ```
 
 2. **Create and activate a virtual environment**:
