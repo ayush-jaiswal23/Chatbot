@@ -1,0 +1,5 @@
+Flask
+google-generativeai
+httpx
+Markdown
+python-dotenv
