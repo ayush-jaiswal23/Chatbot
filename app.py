@@ -4,7 +4,6 @@ from google.genai import types
 import sqlite3
 import re
 import os
-import httpx
 import markdown
 
 def format_gemini_response_to_html(response_text: str) -> str:
@@ -206,7 +205,7 @@ def send_message():
             db.close()
             return jsonify({'bot_response': ai_response})
 
-    except (httpx.ConnectError, httpx.ReadTimeout) as e:
+    except Exception as e:
         db.close()
         return jsonify({'error': 'Network error, please try again later.'}), 500    
 
