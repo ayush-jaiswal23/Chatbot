@@ -306,7 +306,7 @@
             <div class="form-group">
                 <label for="password">Password</label>
                 <input type="password" id="password" name="password" placeholder="Enter your password" required>
-                {% if validDetails==False %}
+                {% if error %}
                 <div style="color: var(--error); margin-top: 8px;">Invalid Details</div>
                 {% endif %}
                 <button type="button" class="password-toggle" onclick="togglePassword()" style="margin: 9px;">Show</button>
