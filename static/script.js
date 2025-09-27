@@ -79,6 +79,22 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
+    function getExactResponse(userInput) {
+        const chatHistory = getChatHistoryFromCache();
+        console.log("type of chatHistory: ",typeof chatHistory);
+        console.log("chatHistory: ",chatHistory);
+        if (!chatHistory) return null;
+        for (let i = 0; i < chatHistory.length; i++) {
+            if (chatHistory[i].role === 'user' ) {
+                if (chatHistory[i].content.toLowerCase().trim() === userInput.toLowerCase().trim()) {
+                    if (i + 1 < chatHistory.length && chatHistory[i + 1].role === 'bot') {
+                        return chatHistory[i + 1].content;
+                    }
+                }
+            }
+        }
+        return null;
+    }
     loadChatHistory();
 
     chatForm.addEventListener('submit', async (e) => {
@@ -86,26 +102,41 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const formData = new FormData(chatForm);
         const userMessage = formData.get('prompt');
-
-        appendMessage(userMessage, 'user');
+        const file = formData.get('file');
+        console.log("file: ",file);
+        if(file.name!=""){
+            appendMessage(`${userMessage}. file: ${file.name}`, 'user');
+        }
+        else{
+            appendMessage(userMessage, 'user');
+        }
+        console.log('formData:', formData);
         promptInput.value = '';
 
-        try {
-            const response = await fetch('/send_message', {
-                method: 'POST',
-                body: formData,
-            });
+        const response = getExactResponse(userMessage);
+        if(response){
+            console.log('Found exact match in local storage');
+            appendMessage(response, 'bot');
+        }
+        else{
+            console.log('No exact match found, sending to server');
+            try {
+                const response = await fetch('/send_message', {
+                    method: 'POST',
+                    body: formData,
+                });
 
-            if (response.ok) {
-                const data = await response.json();
-                appendMessage(data.bot_response, 'bot');
-            } else {
-                console.error('Error sending message:', response.statusText);
-                appendMessage('Sorry, something went wrong. Please try again.', 'bot');
+                if (response.ok) {
+                    const data = await response.json();
+                    appendMessage(data.bot_response, 'bot');
+                } else {
+                    console.error('Error sending message:', response.statusText);
+                    appendMessage('Sorry, something went wrong. Please try again.', 'bot');
+                }
+            } catch (error){
+                console.error('Error:', error);
+                appendMessage('Sorry, there was a network error. Please try again.', 'bot');
             }
-        } catch (error){
-            console.error('Error:', error);
-            appendMessage('Sorry, there was a network error. Please try again.', 'bot');
         }
     });
 

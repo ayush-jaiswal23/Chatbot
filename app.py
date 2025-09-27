@@ -5,6 +5,7 @@ import sqlite3
 import re
 import os
 import markdown
+import magic
 
 def format_gemini_response_to_html(response_text: str) -> str:
 
@@ -177,20 +178,36 @@ def send_message():
         if prompt or prompt.strip() != "":
             if file:
                 binary_file = file.read()
-                fileprompt = f"{prompt} File: {file.filename} "
-                response = client.models.generate_content(
-                    model="gemini-2.5-flash",
-                    contents=[
-                        types.Part.from_bytes(
-                            data=binary_file,
-                            mime_type='application/pdf',
-                        ),
-                        f"last conversation: {last_conversation} and prompt: {prompt}"
-                    ],
-                    config=types.GenerateContentConfig(
-                        system_instruction="Your are helpful assistant who generate response on prompt with analyzing the last conversation",
+                fileprompt = f"{prompt} file {file.filename} "
+                true_mime_type = magic.from_buffer(binary_file, mime=True)
+                if true_mime_type == 'application/pdf': 
+                    response = client.models.generate_content(
+                        model="gemini-2.5-flash",
+                        contents=[
+                            types.Part.from_bytes(
+                                data=binary_file,
+                                mime_type='application/pdf',
+                            ),
+                            f"last conversation: {last_conversation} and prompt: {prompt}"
+                        ],
+                        config=types.GenerateContentConfig(
+                            system_instruction="Your are helpful assistant who generate response on prompt with analyzing the last conversation",
+                        )
                     )
-                )
+                else:
+                    response = client.models.generate_content(
+                        model="gemini-2.5-flash",
+                        contents=[
+                            types.Part.from_bytes(
+                                data=binary_file,
+                                mime_type=true_mime_type,
+                            ),
+                            f"last conversation: {last_conversation} and prompt: {prompt}"
+                        ],
+                        config=types.GenerateContentConfig(
+                            system_instruction="Your are helpful assistant who generate response on prompt with analyzing the last conversation",
+                        )
+                    )
                 cursor.execute("INSERT INTO chat_history (username, role, content) VALUES (?, ?, ?)",(username, 'user', fileprompt))
                 db.commit()
                 
