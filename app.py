@@ -134,6 +134,12 @@ def signup():
 def chat():
     if 'username' not in session:
         return redirect(url_for('login'))
+    return render_template('chatbot.html')
+
+@app.route('/get_chat_history')
+def get_chat_history():
+    if 'username' not in session:
+        return jsonify({'error': 'Unauthorized'}), 401
 
     db = get_db()
     cursor = db.cursor()
@@ -141,7 +147,7 @@ def chat():
     chat_history = cursor.fetchall()
     db.close()
 
-    return render_template('chatbot.html', chat_history=chat_history)
+    return jsonify([dict(row) for row in chat_history])
 
 @app.route("/send_message",methods = ['POST'])
 def send_message():

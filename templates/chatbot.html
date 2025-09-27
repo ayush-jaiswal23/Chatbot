@@ -26,7 +26,7 @@
       }
     </script>
 </head>
-<body class="bg-gradient-to-br from-bgDark to-containerDark text-textLight min-h-screen flex flex-col">
+<body class="bg-gradient-to-br from-bgDark to-containerDark text-textLight min-h-screen flex flex-col" data-username="{{ session['username'] }}">
     <div class="flex flex-col h-screen">
         <div class="flex items-center h-20 rounded-xl border border-inputBorder p-4 shadow-lg bg-containerDark/90 backdrop-blur-md mb-2">
             <img src="static/images/logo.png" class="h-14 w-14 rounded-full border-2 border-primary shadow-md">
@@ -38,19 +38,6 @@
         </div>
 
         <div id="chat-container" class="flex-1 overflow-y-auto px-6 md:px-36 py-6 bg-containerDark rounded-xl shadow-inner">
-            {% if chat_history %}
-                {% for chat in chat_history %}
-                    {% if chat.role == "user" %}
-                        <div class="max-w-[70%] ml-auto px-5 py-3 leading-6 bg-inputDark rounded-2xl mb-4 border border-inputBorder shadow-md text-textLight">
-                            {{ chat.content }}
-                        </div>
-                    {% else %}
-                        <div class="px-5 py-3 leading-6 mb-4 bg-gradient-to-r from-primary/10 to-secondary/10 rounded-2xl border border-inputBorder shadow text-textLight">
-                            {{ chat.content | safe }}
-                        </div>
-                    {% endif %}
-                {% endfor %}
-            {% endif %}
         </div>
 
         <div class="p-4 border-t border-inputBorder flex-shrink-0 px-6 md:px-36 bg-containerDark rounded-b-xl">
